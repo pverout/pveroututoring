@@ -176,6 +176,11 @@
     visibility:visible;
     transform:translateX(-50%) translateY(0);
   }
+  .email-tip.tip-active::after, .email-tip.tip-active::before{
+    opacity:1;
+    visibility:visible;
+    transform:translateX(-50%) translateY(0);
+  }
 
   /* ===== Hero ===== */
   .hero{
@@ -501,7 +506,7 @@
         <h3>At a Glance</h3>
         <ul>
           <li><strong>Education</strong>MSc Financial Engineering, HEC Montréal; BSc Actuarial Mathematics, Concordia</li>
-          <li><strong>Awards</strong>Eric O'Connor Mathematics Medal; Mathematics &amp; Statistics Top 1% Scholar Award (x2); Economical Insurance Scholarship (x2); NSERC Graduate Researcher Scholarship; Concordia Undergraduate Researcher Award</li>
+          <li><strong>Awards</strong>Eric O'Connor Mathematics Medal; 2x Mathematics &amp; Statistics Top 1% Scholar Award; 2x Economical Insurance Scholarship; NSERC Graduate Researcher Scholarship; Concordia Undergraduate Researcher Award</li>
           <li><strong>Format</strong>1-on-1 or groups, online or in person, in English or French</li>
           <li><strong>Session notes</strong>Written notes provided after every session</li>
         </ul>
@@ -625,6 +630,30 @@
     </div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var EMAIL = 'pveroutis02@gmail.com';
+  var COPIED_TEXT = 'Email copied to clipboard!';
+  var buttons = document.querySelectorAll('.email-tip');
+  buttons.forEach(function(btn){
+    var originalTip = btn.getAttribute('data-tip');
+    var revertTimer;
+    btn.addEventListener('click', function(){
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL).catch(function(){});
+      }
+      btn.setAttribute('data-tip', COPIED_TEXT);
+      btn.classList.add('tip-active');
+      clearTimeout(revertTimer);
+      revertTimer = setTimeout(function(){
+        btn.setAttribute('data-tip', originalTip);
+        btn.classList.remove('tip-active');
+      }, 2200);
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
