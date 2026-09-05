@@ -130,8 +130,8 @@
   .btn-outline:hover{background:var(--navy); color:var(--white) !important;}
   .header-actions{display:flex; gap:12px; align-items:center;}
 
-  .email-tip{position:relative;}
-  .email-tip::after{
+  .email-tip, .email-copy{position:relative;}
+  .email-tip::after, .email-copy::after{
     content:attr(data-tip);
     position:absolute;
     bottom:calc(100% + 10px);
@@ -151,7 +151,7 @@
     transition:opacity .15s ease, transform .15s ease;
     z-index:20;
   }
-  .email-tip::before{
+  .email-tip::before, .email-copy::before{
     content:"";
     position:absolute;
     bottom:100%;
@@ -176,7 +176,8 @@
     visibility:visible;
     transform:translateX(-50%) translateY(0);
   }
-  .email-tip.tip-active::after, .email-tip.tip-active::before{
+  .email-tip.tip-active::after, .email-tip.tip-active::before,
+  .email-copy.tip-active::after, .email-copy.tip-active::before{
     opacity:1;
     visibility:visible;
     transform:translateX(-50%) translateY(0);
@@ -617,7 +618,7 @@
     <div>
       <h2>Ready for your first session?</h2>
     </div>
-    <a class="btn" href="mailto:pveroutis02@gmail.com?subject=Tutoring%20Inquiry" target="_top">pveroutis02@gmail.com</a>
+    <a class="btn email-copy" href="mailto:pveroutis02@gmail.com?subject=Tutoring%20Inquiry" target="_top">pveroutis02@gmail.com</a>
   </div>
 </section>
 
@@ -626,7 +627,7 @@
     <span>&copy; 2026 Peter Veroutis</span>
     <div class="footer-links">
       <a href="https://www.linkedin.com/in/peter-veroutis" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:pveroutis02@gmail.com" target="_top">pveroutis02@gmail.com</a>
+      <a class="email-copy" href="mailto:pveroutis02@gmail.com" target="_top">pveroutis02@gmail.com</a>
     </div>
   </div>
 </footer>
@@ -635,7 +636,7 @@
 (function(){
   var EMAIL = 'pveroutis02@gmail.com';
   var COPIED_TEXT = 'Email copied to clipboard!';
-  var buttons = document.querySelectorAll('.email-tip');
+  var buttons = document.querySelectorAll('.email-tip, .email-copy');
   buttons.forEach(function(btn){
     var originalTip = btn.getAttribute('data-tip');
     var revertTimer;
@@ -647,7 +648,11 @@
       btn.classList.add('tip-active');
       clearTimeout(revertTimer);
       revertTimer = setTimeout(function(){
-        btn.setAttribute('data-tip', originalTip);
+        if (originalTip === null) {
+          btn.removeAttribute('data-tip');
+        } else {
+          btn.setAttribute('data-tip', originalTip);
+        }
         btn.classList.remove('tip-active');
       }, 2200);
     });
